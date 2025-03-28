@@ -1,4 +1,4 @@
-This is an UNFINISHED emulator of the Atari 2600.
+This is an UNFINISHED emulator of the Atari 2600. This was made for the purpose of learning about hardware and C++ programming.
 
 References used:
 Overview of 6502 opcodes: https://www.atarimax.com/jindroush.atari.org/aopc.html
