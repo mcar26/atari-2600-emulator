@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <SDL2/SDL.h>
 
+#include "ops.h"
+
 #define SCREEN_HEIGHT 500
 #define SCREEN_WIDTH 500
 
@@ -46,13 +48,28 @@ int main(int argc, char** argv) {
     char memory[8191];
     char flags = 0xff;
     short pc = 0;
+    char sp = 127;
     read_program(memory, argv[1]);
 
     // main loop
-    char opcode;
+    char opcode, arg1, arg2;
     while (1) {
         opcode = memory[pc + ROM_ADDRESS];
-
+        if (ops_noargs.count(opcode)) {
+            ops_noargs.at(opcode)();
+            pc++;
+        } else if (ops_onearg.count(opcode)) {
+            arg1 = memory[pc + ROM_ADDRESS + 1];
+            ops_onearg.at(opcode)(arg1);
+            pc += 2;
+        } else if (ops_twoargs.count(opcode)) {
+            arg1 = memory[pc + ROM_ADDRESS + 1];
+            arg2 = memory[pc + ROM_ADDRESS + 2];
+            ops_twoargs.at(opcode)(arg1, arg2);
+            pc += 3;
+        } else {
+            // error handling
+        }
     }
 
     return 0;
